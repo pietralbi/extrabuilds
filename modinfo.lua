@@ -3,7 +3,7 @@ name = "Extra builds"
 description = "Makes extra structures cradftable, including catcoon house, mermhouse, touch stone"
 author = "Alberto Pietralunga"
 
-version = "1.0.1"
+version = "1.1.1"
 forumthread = ""
 
 api_version = 6
@@ -46,7 +46,7 @@ configuration_options =
 {
 	{
 		name = "hollow_stump",
-		label = "Hollow Stump",
+		label = "1. Hollow Stump",
         options =
 	    {
 	    	{description = "Off", data = false},
@@ -95,7 +95,7 @@ configuration_options =
 	},
 	{
 		name = "mermhouse",
-		label = "Mermhouse / Merm Hut",
+		label = "2. Mermhouse/Merm Hut",
         options =
 	    {
 	    	{description = "Off", data = false},
@@ -117,10 +117,46 @@ configuration_options =
 	},
     {
  		name = "fish",
-	        label = "Fish / Tropical Fish",
+	        label = "Fish/Tropical Fish",
         	options = range(1, 16, 1),
 		default = 4
 	},
-
-
+	{
+		name = "mermhouse_fisher",
+		label = "3. Fishermerm's Hut",
+        options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+        default = true
+	},
+    {
+ 		name = "boards_fisher",
+	        label = "Boards",
+        	options = range(1, 16, 1),
+		default = 4
+	},
+    {
+ 		name = "rocks_fisher",
+	        label = "Rocks",
+        	options = range(1, 16, 1),
+		default = 4
+	},
+    {
+ 		name = "fish_fisher",
+	        label = "Tropical Fish",
+        	options = range(1, 16, 1),
+		default = 2
+	},
+    {
+        name = "change_minimap_icon_fisher",
+        label = "Minimap icon",
+        options =
+	   {
+	      {description = "Off", data = false},
+	      {description = "On", data = true}
+	   },
+        default = true
+	},
 }

@@ -1,0 +1,6 @@
+﻿<Atlas>
+	<Texture filename="mermhouse_fisher.tex" />
+	<Elements>
+		<Element name="mermhouse_fisher.tex" u1="0.001" u2="0.999" v2="0.999" v1="0.001" variant="" />
+	</Elements>
+</Atlas>

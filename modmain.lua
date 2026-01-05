@@ -11,7 +11,7 @@ local enabledPORK = GLOBAL.rawget(GLOBAL, "PORKLAND_DLC") and GLOBAL.IsDLCEnable
 local enabledAnyDLC = enabledROG or enabledSHIP or enabledPORK
 local vanilla = not enabledAnyDLC
 
-local DEBUG = true
+local DEBUG = false
 
 local function dprint(...)
     if DEBUG then
@@ -32,14 +32,16 @@ end
 Assets = {
     Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
     Asset("ATLAS", "images/inventoryimages/mermhouse.xml"),
+    Asset("ATLAS", "images/inventoryimages/mermhouse_fisher.xml"),
     Asset("ATLAS", "minimap/catcoonden_map.xml"),
-    Asset("ATLAS", "minimap/mermhouse_fisher.xml")
+    Asset("ATLAS", "minimap/mermhouse_fisher_map.xml")
 }
 
 PrefabFiles = {
     "catcoondenplacer",
     "mermhouseplacer",
-    "mermhutplacer"
+    "mermhutplacer",
+    "mermfisherplacer"
 }
 
 -- Hollow Stump
@@ -153,4 +155,33 @@ if GetModConfigData("mermhouse") then
             mermhouse_sw.sortkey = pighouse.sortkey + 0.1
         end
     end
+end
+
+if GetModConfigData("mermhouse_fisher") then
+    if enabledSHIP or enabledPORK then
+
+        STRINGS.RECIPE_DESC.MERMHOUSE_FISHER = "A fishy house for fishing merms."
+
+        local ingredients = {
+            Ingredient("boards", GetModConfigData("boards_fisher")),
+            Ingredient("rocks",   GetModConfigData("rocks_fisher")),
+            Ingredient("tropical_fish", GetModConfigData("fish_fisher")),
+        }
+
+        local fishermermhouse = MakeRecipe("mermhouse_fisher", ingredients, RECIPETABS.TOWN, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.SHIPWRECKED, "mermfisher_placer")
+        fishermermhouse.atlas = "images/inventoryimages/mermhouse_fisher.xml"
+        local pighouse = GLOBAL.GetRecipe("pighouse")
+        if pighouse ~= nil then
+            fishermermhouse.sortkey = pighouse.sortkey + 0.2
+        end
+    end
+end
+
+if GetModConfigData("change_minimap_icon_fisher") then
+    AddMinimapAtlas("minimap/mermhouse_fisher_map.xml")
+
+    local function ChangeMiniMapIcon(inst)
+        inst.MiniMapEntity:SetIcon("mermhouse_fisher_map.tex")
+    end
+    AddPrefabPostInit("mermhouse_fisher", ChangeMiniMapIcon)
 end

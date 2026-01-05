@@ -1,0 +1,1 @@
+return MakePlacer( "common/mermfisher_placer", "merm_fisherman_house", "merm_fisherman_house", "idle")
