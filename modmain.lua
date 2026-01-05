@@ -1,204 +1,156 @@
-local GLOBAL = GLOBAL
+-- UTILS
 local STRINGS = GLOBAL.STRINGS
 local TUNING = GLOBAL.TUNING
-local hasROG = GLOBAL.TheSim:IsDLCInstalled(GLOBAL.REIGN_OF_GIANTS)
-local hasSHIP = GLOBAL.TheSim:IsDLCInstalled(GLOBAL.CAPY_DLC)
-local hasPORK = GLOBAL.TheSim:IsDLCInstalled(GLOBAL.PORKLAND_DLC)
-local vanilla = not (hasROG or hasSHIP or hasPORK)
-local hasAnyDLC = hasROG or hasSHIP or hasPORK
+local RECIPETABS = GLOBAL.RECIPETABS
+local TECH = GLOBAL.TECH
+local RECIPE_GAME_TYPE = GLOBAL.RECIPE_GAME_TYPE
+local AllRecipes = GLOBAL.GetAllRecipes()
+local enabledROG = GLOBAL.IsDLCEnabled(GLOBAL.REIGN_OF_GIANTS)
+local enabledSHIP = GLOBAL.rawget(GLOBAL, "CAPY_DLC") and GLOBAL.IsDLCEnabled(GLOBAL.CAPY_DLC)
+local enabledPORK = GLOBAL.rawget(GLOBAL, "PORKLAND_DLC") and GLOBAL.IsDLCEnabled(GLOBAL.PORKLAND_DLC)
+local enabledAnyDLC = enabledROG or enabledSHIP or enabledPORK
+local vanilla = not enabledAnyDLC
 
--- Recipe DLC wrapper
-do
-    local _Recipe = GLOBAL.Recipe
-    local RECIPE_GAME_TYPE = GLOBAL.RECIPE_GAME_TYPE
+local DEBUG = true
 
-    local function NormalizeGameType(flag)
-        -- Vanilla/RoG don't have game types; caller flag is ignored there anyway.
-        if not RECIPE_GAME_TYPE then
-            return nil
-        end
-
-        if flag == nil then
-            return RECIPE_GAME_TYPE.COMMON
-        end
-
-        -- Allow passing a list of game types (SW/HAM support table)
-        if type(flag) == "table" then
-            return flag
-        end
-
-        -- Allow passing RECIPE_GAME_TYPE.* directly
-        if flag == RECIPE_GAME_TYPE.COMMON
-        or flag == RECIPE_GAME_TYPE.ROG
-        or flag == RECIPE_GAME_TYPE.SHIPWRECKED
-        or flag == RECIPE_GAME_TYPE.PORKLAND then
-            return flag
-        end
-
-        -- Allow passing DLC constants
-        if flag == GLOBAL.REIGN_OF_GIANTS then
-            return RECIPE_GAME_TYPE.ROG
-        elseif flag == GLOBAL.CAPY_DLC then
-            return RECIPE_GAME_TYPE.SHIPWRECKED
-        elseif flag == GLOBAL.PORKLAND_DLC then
-            return RECIPE_GAME_TYPE.PORKLAND
-        end
-
-        -- Allow passing strings
-        if type(flag) == "string" then
-            local f = string.upper(flag)
-            if f == "COMMON" then return RECIPE_GAME_TYPE.COMMON end
-            if f == "ROG" or f == "REIGN_OF_GIANTS" then return RECIPE_GAME_TYPE.ROG end
-            if f == "SW" or f == "SHIPWRECKED" then return RECIPE_GAME_TYPE.SHIPWRECKED end
-            if f == "HAM" or f == "HAMLET" or f == "PORK" or f == "PORKLAND" then return RECIPE_GAME_TYPE.PORKLAND end
-        end
-
-        return RECIPE_GAME_TYPE.COMMON
-    end
-
-    -- New call:
-    --   Recipe(dlc_flag, name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive, [opts or positional extras])
-    --
-    -- Legacy call (still supported):
-    --   Recipe(name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive, [positional extras])
-    GLOBAL.Recipe = function(a1, a2, a3, a4, a5, a6, a7, a8, a9, ...)
-        local dlc_flag, name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive
-        local extra1, extra2, extra3, extra4, extra5, extra6, extra7
-
-        -- Legacy signature detection: Recipe(name:string, ingredients:table, ...)
-        if type(a1) == "string" and type(a2) == "table" then
-            dlc_flag    = nil
-            name        = a1
-            ingredients = a2
-            tab         = a3
-            level       = a4
-            placer      = a5
-            min_spacing = a6
-            nounlock    = a7
-            numtogive   = a8
-            extra1, extra2, extra3, extra4, extra5, extra6, extra7 = a9, ...
-        else
-            dlc_flag    = a1
-            name        = a2
-            ingredients = a3
-            tab         = a4
-            level       = a5
-            placer      = a6
-            min_spacing = a7
-            nounlock    = a8
-            numtogive   = a9
-            extra1, extra2, extra3, extra4, extra5, extra6, extra7 = ...
-        end
-
-        -- Extra args:
-        -- SW positional: aquatic, distance
-        -- HAM positional: aquatic, distance, decor, flipable, image, wallitem, alt_ingredients
-        --
-        -- Also supports passing a single opts-table right after numtogive:
-        --   { aquatic=..., distance=..., decor=..., flipable=..., image=..., wallitem=..., alt_ingredients=... }
-        local aquatic, distance, decor, flipable, image, wallitem, alt_ingredients =
-            extra1, extra2, extra3, extra4, extra5, extra6, extra7
-
-        if type(extra1) == "table" and (
-            extra1.aquatic ~= nil or extra1.distance ~= nil or extra1.decor ~= nil or extra1.flipable ~= nil
-            or extra1.image ~= nil or extra1.wallitem ~= nil or extra1.alt_ingredients ~= nil
-        ) then
-            local o = extra1
-            aquatic         = o.aquatic
-            distance        = o.distance
-            decor           = o.decor
-            flipable        = o.flipable
-            image           = o.image
-            wallitem        = o.wallitem
-            alt_ingredients = o.alt_ingredients
-        end
-
-        if hasPORK then
-            local game_type = NormalizeGameType(dlc_flag)
-            return _Recipe(
-                name, ingredients, tab, level, game_type,
-                placer, min_spacing, nounlock, numtogive,
-                aquatic, distance, decor, flipable, image, wallitem, alt_ingredients
-            )
-        elseif hasSHIP then
-            local game_type = NormalizeGameType(dlc_flag)
-            return _Recipe(
-                name, ingredients, tab, level, game_type,
-                placer, min_spacing, nounlock, numtogive,
-                aquatic, distance
-            )
-        else
-            -- Vanilla/RoG: ignore dlc_flag and DLC-only extras
-            return _Recipe(name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive)
-        end
+local function dprint(...)
+    if DEBUG then
+        print(...)
     end
 end
 
+local function MakeRecipe(name, ingredients, tab, level, game_type, placer, min_spacing, nounlock, numtogive, aquatic, distance, decor, flipable, image, wallitem, alt_ingredients)
+    if enabledPORK then
+        return Recipe(name, ingredients, tab, level, game_type, placer, min_spacing, nounlock, numtogive, aquatic, distance, decor, flipable, image, wallitem, alt_ingredients)
+    elseif enabledSHIP then
+        return Recipe(name, ingredients, tab, level, game_type, placer, min_spacing, nounlock, numtogive, aquatic, distance)
+    else
+        return Recipe(name, ingredients, tab, level, placer, min_spacing, nounlock, numtogive)
+    end
+end
 
+Assets = {
+    Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
+    Asset("ATLAS", "images/inventoryimages/mermhouse.xml"),
+    Asset("ATLAS", "minimap/catcoonden_map.xml"),
+    Asset("ATLAS", "minimap/mermhouse_fisher.xml")
+}
 
 PrefabFiles = {
-	"catcoondenplacer",
+    "catcoondenplacer",
+    "mermhouseplacer",
+    "mermhutplacer"
 }
-Assets = {
-	Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
-    Asset("IMAGE", "images/inventoryimages/catcoonden.tex"),
-    Asset("ATLAS", "minimap/catcoonden_map.xml"),
-}
-AddMinimapAtlas("minimap/catcoonden_map.xml")
-STRINGS.RECIPE_DESC.CATCOONDEN = "Catcoon's sweet home."
 
 -- Hollow Stump
-if GetModConfigData("hollow_stump") then
-    
+if GetModConfigData("hollow_stump") and enabledAnyDLC then
+
+    STRINGS.RECIPE_DESC.CATCOONDEN = "Catcoon's sweet home."
+
+    local ingredients = {
+        Ingredient("twigs", GetModConfigData("twigs")),
+        Ingredient("log",   GetModConfigData("log")),
+        Ingredient("coontail", GetModConfigData("coontail")),
+    }
+
+    local catcoonden = MakeRecipe("catcoonden", ingredients, RECIPETABS.TOWN, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.ROG, "catcoonden_placer")
+    catcoonden.atlas = "images/inventoryimages/catcoonden.xml"
+
+    local rabbithouse = GLOBAL.GetRecipe("rabbithouse")
+    if rabbithouse ~= nil then
+        catcoonden.sortkey = rabbithouse.sortkey + 0.1
+    end
 end
 
-if IsDLCEnabled and ( IsDLCEnabled(CAPY_DLC) or IsDLCEnabled(PORKLAND_DLC) ) then
-
-    print("INSIDE SW AND HM AA")
-    --//Enable recipe at ROG world
-    local catcoonden = Recipe("catcoonden",
-        {
-            Ingredient("twigs", GetModConfigData("twigs")),
-            Ingredient("log", GetModConfigData("log")),
-            Ingredient("coontail", GetModConfigData("coontail"))
-        },
-		RECIPETABS.TOWN, TECH.SCIENCE_TWO)
-	catcoonden.atlas = "images/inventoryimages/catcoonden.xml"
-    --catcoonden.image = "images/inventoryimages/catcoonden.tex"
-    catcoonden.placer = "catcoonden_placer"
-    catcoonden.game_type =  "rog"
-
-elseif IsDLCEnabled and IsDLCEnabled(REIGN_OF_GIANTS) then
-    --//Enable recipe at Vanilla world
-    print("INSIDE ROG")
-    local catcoonden = Recipe("catcoonden",
-        {
-            Ingredient("twigs", GetModConfigData("twigs")),
-            Ingredient("log", GetModConfigData("log")),
-            Ingredient("coontail", GetModConfigData("coontail"))
-        },
-		RECIPETABS.TOWN, TECH.SCIENCE_TWO)
-	catcoonden.atlas = "images/inventoryimages/catcoonden.xml"
-    catcoonden.placer = "catcoonden_placer"
-end
-
-if GetModConfigData("infinite_lives") == "on" then
+if GetModConfigData("infinite_lives") then
     local function InfiniteLives(inst)
         inst.components.childspawner.onchildkilledfn = function(inst, child)
-	    inst.lives_left = inst.lives_left -- do not decrement 
-	    if inst.lives_left <= 0 then
-	        inst.components.childspawner:StopRegen()
-	        inst.components.childspawner:StopSpawning()
-	        inst:RemoveComponent("childspawner")
-	    end
+            inst.lives_left = inst.lives_left -- do not decrement 
+            if inst.lives_left <= 0 then
+                inst.components.childspawner:StopRegen()
+                inst.components.childspawner:StopSpawning()
+                inst:RemoveComponent("childspawner")
+            end
         end
     end
     AddPrefabPostInit("catcoonden", InfiniteLives)
 end
 
-if GetModConfigData("change_minimap_icon") == "on" then
+if GetModConfigData("change_minimap_icon") then
+    AddMinimapAtlas("minimap/catcoonden_map.xml")
+
     local function ChangeMiniMapIcon(inst)
         inst.MiniMapEntity:SetIcon("catcoonden_map.tex")
     end
     AddPrefabPostInit("catcoonden", ChangeMiniMapIcon)
+end
+
+if GetModConfigData("mermhouse") then
+    -- To avoid crash due to NAMES.MERMHOUSE being a table
+    local function ResolveNameTable(v)
+        if type(v) ~= "table" then
+            return v
+        end
+        local name = ((vanilla or enabledROG) and v.BASE)
+                or ((enabledSHIP or enabledPORK) and v.SW)
+        return name or "ERROR"
+    end
+
+    -- Patch 1: PlayerController:GetHoverTextOverride (avoid concatenating a table)
+    AddComponentPostInit("playercontroller", function(self)
+        local _GetHoverTextOverride = self.GetHoverTextOverride
+
+        function self:GetHoverTextOverride()
+            if self.placer_recipe then
+                local key = string.upper(self.placer_recipe.name)
+                local v = STRINGS.NAMES[key]
+                if type(v) == "table" then
+                    v = ResolveNameTable(v)
+                end
+                return STRINGS.UI.HUD.BUILD .. " " .. (v or STRINGS.UI.HUD.HERE)
+            end
+        end
+    end)
+
+    -- Patch 2: Text:SetString (avoid passing a table into the engine TextWidget)
+    AddClassPostConstruct("widgets/text", function(self)
+        local _SetString = self.SetString
+
+        function self:SetString(str)
+            if type(str) == "table" then
+                str = ResolveNameTable(str)
+            end
+            return _SetString(self, str)
+        end
+    end)
+
+    STRINGS.RECIPE_DESC.MERMHOUSE = "A soggy shack for merms."
+
+    local ingredients_base = {
+        Ingredient("boards", GetModConfigData("boards")),
+        Ingredient("rocks",   GetModConfigData("rocks")),
+        Ingredient("fish", GetModConfigData("fish")),
+    }
+
+    local mermhouse_base = MakeRecipe("mermhouse", ingredients_base, RECIPETABS.TOWN, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.VANILLA, "mermhouse_placer")
+    mermhouse_base.atlas = "images/inventoryimages/mermhouse.xml"
+    local pighouse = GLOBAL.GetRecipe("pighouse")
+    if pighouse ~= nil then
+        mermhouse_base.sortkey = pighouse.sortkey + 0.1
+    end
+
+    if enabledSHIP or enabledPORK then
+        local ingredients_sw = {
+            Ingredient("boards", GetModConfigData("boards")),
+            Ingredient("rocks",   GetModConfigData("rocks")),
+            Ingredient("tropical_fish", GetModConfigData("fish")),
+        }
+
+        local mermhouse_sw = MakeRecipe("mermhouse", ingredients_sw, RECIPETABS.TOWN, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.SHIPWRECKED, "mermhut_placer")
+        mermhouse_sw.atlas = "images/inventoryimages/mermhouse.xml"
+        local pighouse = GLOBAL.GetRecipe("pighouse")
+        if pighouse ~= nil then
+            mermhouse_sw.sortkey = pighouse.sortkey + 0.1
+        end
+    end
 end

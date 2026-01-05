@@ -44,7 +44,7 @@ end
 
 configuration_options =
 {
-	{ 
+	{
 		name = "hollow_stump",
 		label = "Hollow Stump",
         options =
@@ -60,8 +60,7 @@ configuration_options =
         	options = range(1, 16, 1),
 		default = 4
 	},
-
-    	{
+    {
  		name = "log", 
 	        label = "Logs",
         	options = range(1, 16, 1),
@@ -79,20 +78,49 @@ configuration_options =
         label = "Infinite lives",
         options =
 	   {
-	      {description = "Off", data = "off"},
-	      {description = "On", data = "on"}
+	      {description = "Off", data = false},
+	      {description = "On", data = true}
 	   },
-        default = "on"
+        default = true
 	},
     {
         name = "change_minimap_icon",
         label = "Minimap icon",
         options =
 	   {
-	      {description = "Off", data = "off"},
-	      {description = "On", data = "on"}
+	      {description = "Off", data = false},
+	      {description = "On", data = true}
 	   },
-        default = "on"
+        default = true
 	},
+	{
+		name = "mermhouse",
+		label = "Mermhouse / Merm Hut",
+        options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+        default = true
+	},
+    {
+ 		name = "boards", 
+	        label = "Boards",
+        	options = range(1, 16, 1),
+		default = 4
+	},
+    {
+ 		name = "rocks", 
+	        label = "Rocks",
+        	options = range(1, 16, 1),
+		default = 4
+	},
+    {
+ 		name = "fish",
+	        label = "Fish / Tropical Fish",
+        	options = range(1, 16, 1),
+		default = 4
+	},
+
 
 }

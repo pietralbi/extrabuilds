@@ -1,0 +1,1 @@
+return MakePlacer( "common/mermhut_placer", "merm_sw_house", "merm_sw_house", "idle")

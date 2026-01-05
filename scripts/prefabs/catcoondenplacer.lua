@@ -1,2 +1,1 @@
-require "prefabutil"
 return MakePlacer( "common/catcoonden_placer", "catcoon_den", "catcoon_den", "idle")
