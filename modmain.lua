@@ -33,6 +33,7 @@ Assets = {
     Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
     Asset("ATLAS", "images/inventoryimages/mermhouse.xml"),
     Asset("ATLAS", "images/inventoryimages/mermhouse_fisher.xml"),
+    Asset("ATLAS", "images/inventoryimages/marblebean.xml"),
     Asset("ATLAS", "minimap/catcoonden_map.xml"),
     Asset("ATLAS", "minimap/mermhouse_fisher_map.xml")
 }
@@ -41,7 +42,8 @@ PrefabFiles = {
     "catcoondenplacer",
     "mermhouseplacer",
     "mermhutplacer",
-    "mermfisherplacer"
+    "mermfisherplacer",
+    "marblebean"
 }
 
 -- Hollow Stump
@@ -184,4 +186,84 @@ if GetModConfigData("change_minimap_icon_fisher") then
         inst.MiniMapEntity:SetIcon("mermhouse_fisher_map.tex")
     end
     AddPrefabPostInit("mermhouse_fisher", ChangeMiniMapIcon)
+end
+
+if GetModConfigData("marble_tree") then
+    local marblebean = MakeRecipe("marblebean", {Ingredient("marble",1)}, RECIPETABS.REFINE, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.VANILLA)
+	marblebean.atlas = "images/inventoryimages/marblebean.xml"
+	-- marblebean.image = "marblebean.tex" 
+
+    STRINGS.NAMES.MARBLEBEAN = "Marble Bean"
+    STRINGS.NAMES.MARBLEBEAN_SAPLING = "Marble Sprout"
+    STRINGS.NAMES.MARBLESHRUB = "Marble Shrub"
+    STRINGS.RECIPE_DESC.MARBLEBEAN = "Grow a marble forest."
+
+    STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARBLEBEAN = "I traded the old family cow for it."
+    STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARBLEBEAN_SAPLING = "It looks carved."
+    STRINGS.CHARACTERS.GENERIC.DESCRIBE.MARBLESHRUB = "Makes sense to me."
+
+    -- Character strings, no WES or WILBUR
+    STRINGS.CHARACTERS.WAGSTAFF.DESCRIBE.MARBLEBEAN = "A lithic seed specimen. Absurd... yet promising."
+    STRINGS.CHARACTERS.WAGSTAFF.DESCRIBE.MARBLEBEAN_SAPLING = "Growth without soil compatibility. The mechanism must be extraordinary."
+    STRINGS.CHARACTERS.WAGSTAFF.DESCRIBE.MARBLESHRUB = "A mature marble growth. The Constant continues to defy taxonomy."
+
+    STRINGS.CHARACTERS.WALANI.DESCRIBE.MARBLEBEAN = "Pretty sure that's not gonna be edible, dude."
+    STRINGS.CHARACTERS.WALANI.DESCRIBE.MARBLEBEAN_SAPLING = "Whoa... it's actually growing. That's wild."
+    STRINGS.CHARACTERS.WALANI.DESCRIBE.MARBLESHRUB = "A rock bush. Kinda rad, not gonna lie."
+
+    STRINGS.CHARACTERS.WARLY.DESCRIBE.MARBLEBEAN = "I don't think this bean is edible."
+    STRINGS.CHARACTERS.WARLY.DESCRIBE.MARBLEBEAN_SAPLING = "Just a petite marble bébé."
+    STRINGS.CHARACTERS.WARLY.DESCRIBE.MARBLESHRUB = "If marble beans can grow, maybe they can be eaten."
+
+    STRINGS.CHARACTERS.WATHGRITHR.DESCRIBE.MARBLEBEAN = "Fee fi fo fum!"
+    STRINGS.CHARACTERS.WATHGRITHR.DESCRIBE.MARBLESHRUB = "Tis a shrub of stone!"
+    STRINGS.CHARACTERS.WATHGRITHR.DESCRIBE.MARBLEBEAN_SAPLING = "How dost thou grow?"
+
+    STRINGS.CHARACTERS.WAXWELL.DESCRIBE.MARBLEBEAN = "Let me guess, it grows a marble stalk?"
+    STRINGS.CHARACTERS.WAXWELL.DESCRIBE.MARBLEBEAN_SAPLING = "Stone cold growth."
+    STRINGS.CHARACTERS.WAXWELL.DESCRIBE.MARBLESHRUB = "I've found a shrubbery."
+
+    STRINGS.CHARACTERS.WEBBER.DESCRIBE.MARBLEBEAN = "Bean there, done that!"
+    STRINGS.CHARACTERS.WEBBER.DESCRIBE.MARBLEBEAN_SAPLING = "You can plant anything in the ground!"
+    STRINGS.CHARACTERS.WEBBER.DESCRIBE.MARBLESHRUB = "That's a weird shape for a bush."
+
+    STRINGS.CHARACTERS.WENDY.DESCRIBE.MARBLEBEAN = "Cold... but not lifeless..."
+    STRINGS.CHARACTERS.WENDY.DESCRIBE.MARBLEBEAN_SAPLING = "It cares nothing for the laws of this world..."
+    STRINGS.CHARACTERS.WENDY.DESCRIBE.MARBLESHRUB = "Against all odds, it has flourished in life..."
+
+    STRINGS.CHARACTERS.WICKERBOTTOM.DESCRIBE.MARBLEBEAN = "Marble growth is arboriculturally impossible."
+    STRINGS.CHARACTERS.WICKERBOTTOM.DESCRIBE.MARBLEBEAN_SAPLING = "I believe it's a perennial."
+    STRINGS.CHARACTERS.WICKERBOTTOM.DESCRIBE.MARBLESHRUB = "Not ideal for topiary."
+
+    STRINGS.CHARACTERS.WILBA.DESCRIBE.MARBLEBEAN = "'TIS BEAN O' ROCK"
+    STRINGS.CHARACTERS.WILBA.DESCRIBE.MARBLEBEAN_SAPLING = "LIL' ROCK TREE"
+    STRINGS.CHARACTERS.WILBA.DESCRIBE.MARBLESHRUB = "'TIS BUSH O' ROCK"
+
+    STRINGS.CHARACTERS.WHEELER.DESCRIBE.MARBLEBEAN = "A stone bean. That's a new one."
+    STRINGS.CHARACTERS.WHEELER.DESCRIBE.MARBLEBEAN_SAPLING = "It's sprouting... against all logic."
+    STRINGS.CHARACTERS.WHEELER.DESCRIBE.MARBLESHRUB = "A marble shrub. File it under \"impossible\"."
+
+    STRINGS.CHARACTERS.WILLOW.DESCRIBE.MARBLEBEAN = "I guess we just... plant it? In the dirt?"
+    STRINGS.CHARACTERS.WILLOW.DESCRIBE.MARBLEBEAN_SAPLING = "That makes no sense!"
+    STRINGS.CHARACTERS.WILLOW.DESCRIBE.MARBLESHRUB = "What sort of bush doesn't burn?!"
+
+    STRINGS.CHARACTERS.WOLFGANG.DESCRIBE.MARBLEBEAN = "Brainlady says is not for eat."
+    STRINGS.CHARACTERS.WOLFGANG.DESCRIBE.MARBLEBEAN_SAPLING = "Rock bush is growing!"
+    STRINGS.CHARACTERS.WOLFGANG.DESCRIBE.MARBLESHRUB = "Rock is strongest bush!"
+
+    STRINGS.CHARACTERS.WOODIE.DESCRIBE.MARBLEBEAN = "The magical fruit."
+    STRINGS.CHARACTERS.WOODIE.DESCRIBE.MARBLEBEAN_SAPLING = "Well, lookit that. It sprouted."
+    STRINGS.CHARACTERS.WOODIE.DESCRIBE.MARBLESHRUB = "Defo can't chop that."
+
+    STRINGS.CHARACTERS.WOODLEGS.DESCRIBE.MARBLEBEAN = "Arr, that be a bean with no business bein' stone."
+    STRINGS.CHARACTERS.WOODLEGS.DESCRIBE.MARBLEBEAN_SAPLING = "It be sproutin' like a cursed little mast."
+    STRINGS.CHARACTERS.WOODLEGS.DESCRIBE.MARBLESHRUB = "A stony shrubbery... not much use, 'less ye be hidin' treasure."
+
+    STRINGS.CHARACTERS.WORMWOOD.DESCRIBE.MARBLEBEAN = "Hard Bean."
+    STRINGS.CHARACTERS.WORMWOOD.DESCRIBE.MARBLEBEAN_SAPLING = "Little Stone Friend!"
+    STRINGS.CHARACTERS.WORMWOOD.DESCRIBE.MARBLESHRUB = "Stone Friend Big Now."
+
+    STRINGS.CHARACTERS.WX78.DESCRIBE.MARBLEBEAN = "INFURIATINGLY ILLOGICAL"
+    STRINGS.CHARACTERS.WX78.DESCRIBE.MARBLEBEAN_SAPLING = "IS IT ORGANIC OR INORGANIC?"
+    STRINGS.CHARACTERS.WX78.DESCRIBE.MARBLESHRUB = "INFERIORITY ASSESSMENT: INCONCLUSIVE"
 end

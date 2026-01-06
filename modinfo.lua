@@ -159,4 +159,15 @@ configuration_options =
 	   },
         default = true
 	},
+	{
+		name = "marble_tree",
+		label = "4. Marble tree",
+        options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+        default = true
+	},
+
 }
