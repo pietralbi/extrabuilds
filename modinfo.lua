@@ -1,9 +1,9 @@
 -- This information tells other players more about the mod
 name = "Extra builds"
-description = "Makes extra structures cradftable, including catcoon house, mermhouse, touch stone"
+description = "Makes extra structures cradftable, including catcoon house, mermhouses, marble tree and mushroom planter"
 author = "Alberto Pietralunga"
 
-version = "1.1.1"
+version = "1.3.0"
 forumthread = ""
 
 api_version = 6
@@ -42,6 +42,10 @@ local function range(a, b, step)
 	return opts
 end
 
+-- MUSHROOMFARM_MAXHARVEST --
+local mm_opt = range(1, 10, 1)
+mm_opt = append(mm_opt, {description = "Infinite", data = false})
+
 configuration_options =
 {
 	{
@@ -55,22 +59,22 @@ configuration_options =
         default = true
 	},
     {
- 		name = "twigs", 
-	        label = "Twigs",
-        	options = range(1, 16, 1),
+ 		name = "twigs",
+		label = "Twigs",
+		options = range(1, 16, 1),
 		default = 4
 	},
     {
- 		name = "log", 
-	        label = "Logs",
-        	options = range(1, 16, 1),
+ 		name = "log",
+		label = "Logs",
+		options = range(1, 16, 1),
 		default = 4
 	},
 
     	{
  		name = "coontail", 
-	        label = "Catcoon tails",
-        	options = range(1, 16, 1),
+		label = "Catcoon tails",
+		options = range(1, 16, 1),
 		default = 4
 	},
 	{
@@ -105,20 +109,20 @@ configuration_options =
 	},
     {
  		name = "boards", 
-	        label = "Boards",
-        	options = range(1, 16, 1),
+	    label = "Boards",
+        options = range(1, 16, 1),
 		default = 4
 	},
     {
  		name = "rocks", 
-	        label = "Rocks",
-        	options = range(1, 16, 1),
+	    label = "Rocks",
+        options = range(1, 16, 1),
 		default = 4
 	},
     {
  		name = "fish",
-	        label = "Fish/Tropical Fish",
-        	options = range(1, 16, 1),
+	    label = "Fish/Tropical Fish",
+        options = range(1, 16, 1),
 		default = 4
 	},
 	{
@@ -133,20 +137,20 @@ configuration_options =
 	},
     {
  		name = "boards_fisher",
-	        label = "Boards",
-        	options = range(1, 16, 1),
+	    label = "Boards",
+        options = range(1, 16, 1),
 		default = 4
 	},
     {
  		name = "rocks_fisher",
-	        label = "Rocks",
-        	options = range(1, 16, 1),
+	    label = "Rocks",
+        options = range(1, 16, 1),
 		default = 4
 	},
     {
  		name = "fish_fisher",
-	        label = "Tropical Fish",
-        	options = range(1, 16, 1),
+	    label = "Tropical Fish",
+        options = range(1, 16, 1),
 		default = 2
 	},
     {
@@ -169,5 +173,30 @@ configuration_options =
 	    },
         default = true
 	},
-
+	{
+		name = "marble_tree_loop",
+		label = "Growth-stage loop ",
+        options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+        default = true
+	},
+	{
+		name = "mushroom_farm",
+		label = "4. Mushroom Planter",
+        options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+        default = true
+	},
+	{
+ 		name = "mushroomfarm_maxharvest",
+		label = "Harvests before depletion",
+		options = mm_opt,
+		default = 4
+	},
 }

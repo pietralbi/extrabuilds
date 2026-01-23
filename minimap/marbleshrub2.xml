@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Atlas>
+	<Texture filename="marbleshrub2.tex" />
+	<Elements>
+		<Element name="marbleshrub2.tex" u1="0.001" u2="0.999" v2="0.999" v1="0.001" />
+	</Elements>
+</Atlas>
