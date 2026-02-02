@@ -3,7 +3,7 @@ name = "Extra builds"
 description = "Makes extra structures cradftable, including catcoon house, mermhouses, marble tree and mushroom planter"
 author = "Alberto Pietralunga"
 
-version = "1.3.0"
+version = "1.4.1"
 forumthread = ""
 
 api_version = 6
@@ -148,10 +148,10 @@ configuration_options =
 		default = 4
 	},
     {
- 		name = "fish_fisher",
-	    label = "Tropical Fish",
+ 		name = "seaweed_fisher",
+	    label = "Seaweed",
         options = range(1, 16, 1),
-		default = 2
+		default = 4
 	},
     {
         name = "change_minimap_icon_fisher",
@@ -199,4 +199,14 @@ configuration_options =
 		options = mm_opt,
 		default = 4
 	},
+	{
+		name = "meatrack",
+		label = "5. DST Meat Rack",
+		options =
+	    {
+	    	{description = "Off", data = false},
+	    	{description = "On", data = true}
+	    },
+		default = true
+	}
 }

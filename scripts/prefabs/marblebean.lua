@@ -1,4 +1,5 @@
 require "prefabutil"
+local U = require("extrabuilds_utils")
 
 local assets =
 {
@@ -21,16 +22,10 @@ local function ondeploy(inst, pt, deployer)
     inst:Remove()
 end
 
-local enabledROG = IsDLCEnabled(REIGN_OF_GIANTS)
-local enabledSHIP = IsDLCEnabled(CAPY_DLC)
-local enabledPORK = IsDLCEnabled(PORKLAND_DLC)
-local enabledAnyDLC = enabledROG or enabledSHIP or enabledPORK
-local vanilla = not enabledAnyDLC
-
 local notags = {'NOBLOCK', 'player', 'FX'}
 local function test_ground(inst, pt)
     local ground_OK = true    
-    if enabledSHIP or enabledPORK then	
+    if U.enabledSHIP or U.enabledPORK then	
         ground_OK = inst:GetIsOnLand(pt.x, pt.y, pt.z)
     end
 	local tiletype = GetGroundTypeAtPosition(pt)

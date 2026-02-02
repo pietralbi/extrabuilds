@@ -1,4 +1,5 @@
 require "prefabutil"
+local U = require("extrabuilds_utils")
 
 local assets =
 {
@@ -78,7 +79,7 @@ local function setlevel(inst, level, dotransition)
         if dotransition then
             inst.AnimState:PlayAnimation(level.grow)
             inst.AnimState:PushAnimation(inst.anims.idle, false)
-            inst.SoundEmitter:PlaySound("dontstarve/common/together/mushroomfarm/grow")
+            inst.SoundEmitter:PlaySound("dontstarve/common/mushroom_up")
         else
             inst.AnimState:PlayAnimation(inst.anims.idle)
         end
@@ -152,6 +153,7 @@ local function onhammered(inst, worker)
 
     local fx = SpawnPrefab("collapse_small")
     fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
+    inst.SoundEmitter:PlaySound("dontstarve/common/destroy_wood")
     inst:Remove()
 end
 
@@ -178,19 +180,6 @@ local function getstatus(inst)
             or inst.components.harvestable.produce == levels[1].amount and "LOTS"
             or inst.components.harvestable:CanBeHarvested() and "SOME"
             or "EMPTY"
-end
-
-local function MakeMediumBurnableDLC(inst)
-    local enabledROG = IsDLCEnabled(REIGN_OF_GIANTS)
-    local enabledSHIP = IsDLCEnabled(CAPY_DLC)
-    local enabledPORK = IsDLCEnabled(PORKLAND_DLC)
-    local enabledAnyDLC = enabledROG or enabledSHIP or enabledPORK
-
-    if enabledAnyDLC then
-        MakeMediumBurnable(inst, nil, nil, true)
-    else
-        MakeMediumBurnable(inst, nil, nil)
-    end
 end
 
 local function onburnt(inst)
@@ -374,7 +363,7 @@ local function fn()
     inst:ListenForEvent("onbuilt", onbuilt)
 	inst:ListenForEvent("snowcoverchange", function() OnSnowCoverChange(inst) end, GetWorld())
 
-    MakeMediumBurnableDLC(inst)
+    U.MakeMediumBurnableDLC(inst)
     MakeLargePropagator(inst)
     inst.components.burnable:SetOnBurntFn(onburnt)
     inst.components.burnable:SetOnIgniteFn(onignite)
