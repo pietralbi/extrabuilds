@@ -39,35 +39,16 @@ local function MakeRecipe(name, ingredients, tab, level, game_type, placer, min_
 end
 
 Assets = {
-    Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
-    Asset("ATLAS", "images/inventoryimages/mermhouse.xml"),
-    Asset("ATLAS", "images/inventoryimages/mermhouse_fisher.xml"),
-    Asset("ATLAS", "images/inventoryimages/marblebean.xml"),
-    Asset("ATLAS", "images/inventoryimages/mushroom_farm.xml"),
-    Asset("ATLAS", "images/inventoryimages/meatrack2.xml"),
-    Asset("ATLAS", "minimap/catcoonden_map.xml"),
-    Asset("ATLAS", "minimap/mermhouse_fisher_map.xml"),
-    Asset("ATLAS", "minimap/marbleshrub1.xml"),
-    Asset("ATLAS", "minimap/marbleshrub2.xml"),
-    Asset("ATLAS", "minimap/marbleshrub3.xml"),
-    Asset("ATLAS", "minimap/mushroom_farm_map.xml"),
-    Asset("ATLAS", "minimap/meatrack2_map.xml")
+    Asset("SOUND", "sound/extrabuilds.fsb"),
+	Asset("SOUNDPACKAGE", "sound/extrabuilds.fev"),
 }
 
-PrefabFiles = {
-    "catcoondenplacer",
-    "mermhouseplacer",
-    "mermhutplacer",
-    "mermfisherplacer",
-    "marblebean",
-    "marblebean_sapling",
-    "marbleshrub",
-    "mushroom_farm",
-    "meatrack2"
-}
+PrefabFiles = {}
 
 -- HOLLOW STUMP
 if GetModConfigData("hollow_stump") and enabledAnyDLC then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/catcoonden.xml"))
+    GLOBAL.table.insert(PrefabFiles, "catcoondenplacer")
 
     STRINGS.RECIPE_DESC.CATCOONDEN = "Catcoon's sweet home."
 
@@ -103,6 +84,8 @@ end
 
 -- HOLLOW STUMP MINIMAP ICON
 if GetModConfigData("change_minimap_icon") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/catcoonden_map.xml"))
+
     AddMinimapAtlas("minimap/catcoonden_map.xml")
 
     local function ChangeMiniMapIcon(inst)
@@ -113,6 +96,9 @@ end
 
 -- MERMHOUSE, MERM'S HUT, FISHERMERM HOUSE
 if GetModConfigData("mermhouse") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/mermhouse.xml"))
+    GLOBAL.table.insert(PrefabFiles, "mermhouseplacer")
+
     -- To avoid crash due to NAMES.MERMHOUSE being a table
     local function ResolveNameTable(v)
         if type(v) ~= "table" then
@@ -126,7 +112,6 @@ if GetModConfigData("mermhouse") then
     -- Patch 1: PlayerController:GetHoverTextOverride (avoid concatenating a table)
     AddComponentPostInit("playercontroller", function(self)
         local _GetHoverTextOverride = self.GetHoverTextOverride
-
         function self:GetHoverTextOverride()
             if self.placer_recipe then
                 local key = string.upper(self.placer_recipe.name)
@@ -167,6 +152,8 @@ if GetModConfigData("mermhouse") then
     end
 
     if enabledSHIP or enabledPORK then
+        GLOBAL.table.insert(PrefabFiles, "mermhutplacer")
+
         local ingredients_sw = {
             Ingredient("boards", GetModConfigData("boards")),
             Ingredient("rocks",   GetModConfigData("rocks")),
@@ -183,6 +170,9 @@ if GetModConfigData("mermhouse") then
 end
 
 if GetModConfigData("mermhouse_fisher") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/mermhouse_fisher.xml"))
+    GLOBAL.table.insert(PrefabFiles, "mermfisherplacer")
+
     if enabledSHIP or enabledPORK then
 
         STRINGS.RECIPE_DESC.MERMHOUSE_FISHER = "A fishy house for fishing merms."
@@ -203,6 +193,8 @@ if GetModConfigData("mermhouse_fisher") then
 end
 
 if GetModConfigData("change_minimap_icon_fisher") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/mermhouse_fisher_map.xml"))
+
     AddMinimapAtlas("minimap/mermhouse_fisher_map.xml")
 
     local function ChangeMiniMapIcon(inst)
@@ -213,6 +205,14 @@ end
 
 -- MARBLE BEAN AND SHRUB
 if GetModConfigData("marble_tree") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/marblebean.xml"))
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/marbleshrub1.xml"))
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/marbleshrub2.xml"))
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/marbleshrub3.xml"))
+    GLOBAL.table.insert(PrefabFiles, "marblebean")
+    GLOBAL.table.insert(PrefabFiles, "marblebean_sapling")
+    GLOBAL.table.insert(PrefabFiles, "marbleshrub")
+
     local marblebean = MakeRecipe("marblebean", {Ingredient("marble",1)}, RECIPETABS.REFINE, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.VANILLA)
 	marblebean.atlas = "images/inventoryimages/marblebean.xml"
     local cutstone = GLOBAL.GetRecipe("cutstone")
@@ -242,6 +242,10 @@ end
 
 -- MUSHROOM PLANTER
 if GetModConfigData("mushroom_farm") then
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/mushroom_farm.xml"))
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/mushroom_farm_map.xml"))
+    GLOBAL.table.insert(PrefabFiles, "mushroom_farm")
+
     local mushroom_farm = MakeRecipe("mushroom_farm", {Ingredient("spoiled_food", 8),Ingredient("poop", 5),Ingredient("livinglog", 2)}, RECIPETABS.FARM, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.VANILLA, "mushroom_farm_placer", 2)
 	mushroom_farm.atlas = "images/inventoryimages/mushroom_farm.xml"
     local beebox = GLOBAL.GetRecipe("beebox")
@@ -298,8 +302,9 @@ end
 
 -- DRYING RACK
 if GetModConfigData("meatrack") then
-    --table.insert(Assets, )
-    --table.insert(PrefabFiles, "meatrack2")
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "images/inventoryimages/meatrack2.xml"))
+    GLOBAL.table.insert(Assets, Asset("ATLAS", "minimap/meatrack2_map.xml"))
+    GLOBAL.table.insert(PrefabFiles, "meatrack2")
 
     local meatrack2 = MakeRecipe("meatrack2", {Ingredient("twigs", 3),Ingredient("charcoal", 2), Ingredient("rope", 3)}, RECIPETABS.FARM, TECH.SCIENCE_ONE, RECIPE_GAME_TYPE.COMMON, "meatrack_placer")
 	meatrack2.atlas = "images/inventoryimages/meatrack2.xml"

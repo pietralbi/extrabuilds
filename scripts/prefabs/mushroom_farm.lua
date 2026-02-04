@@ -79,7 +79,7 @@ local function setlevel(inst, level, dotransition)
         if dotransition then
             inst.AnimState:PlayAnimation(level.grow)
             inst.AnimState:PushAnimation(inst.anims.idle, false)
-            inst.SoundEmitter:PlaySound("dontstarve/common/mushroom_up")
+            inst.SoundEmitter:PlaySound("extrabuilds/mushroomfarm/grow")
         else
             inst.AnimState:PlayAnimation(inst.anims.idle)
         end
@@ -167,7 +167,7 @@ end
 local function onbuilt(inst)
     inst.AnimState:PlayAnimation("place")
     inst.AnimState:PushAnimation("idle", false)
-    inst.SoundEmitter:PlaySound("dontstarve/common/together/mushroomfarm/craft")
+    inst.SoundEmitter:PlaySound("extrabuilds/mushroomfarm/craft")
 end
 
 local function getstatus(inst)

@@ -71,7 +71,7 @@ local function OnBuilt(inst)
 	if not inst:HasTag("abandoned") then
 		inst.AnimState:PlayAnimation("place")
 		inst.AnimState:PushAnimation("idle")
-		inst.SoundEmitter:PlaySound("dontstarve/common/craftable/meat_rack")
+		inst.SoundEmitter:PlaySound("extrabuilds/meatrack/meat_rack_craft")
 	end
 end
 
@@ -90,7 +90,7 @@ local function DoBounce(inst, slot, slotstr)
 		inst.AnimState:PlayAnimation("bounce"..slotstr)
 	end
 	inst.AnimState:PushAnimation("idle")
-	--inst.SoundEmitter:PlaySound("dontstarve/common/together/put_meat_rack")
+	inst.SoundEmitter:PlaySound("extrabuilds/meatrack/meat_rack_use")
 end
 
 local function HideRackItem(inst, slot, name)

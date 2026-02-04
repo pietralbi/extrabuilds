@@ -21,7 +21,7 @@ local statedata =
 		hitanim     = "hit_short",
 		breakanim   = "mined_short",
 		growanim    = "grow_tall_to_short",
-		growsound   = "dontstarve/forest/treeGrowFromWilt",
+		growsound   = "extrabuilds/marbleshrub/wilt_to_grow",
 		workleft    = TUNING.MARBLESHRUB_MINE_SMALL,
 		loot        = {"marble"}
 	},
@@ -31,7 +31,7 @@ local statedata =
 		hitanim     = "hit_normal",
 		breakanim   = "mined_normal",
 		growanim    = "grow_short_to_normal",
-		growsound   = "dontstarve/forest/treeGrow",
+		growsound   = "extrabuilds/marbleshrub/grow",
 		workleft    = TUNING.MARBLESHRUB_MINE_NORMAL,
    		loot = { "marble" },
     	chanceloot = {
@@ -44,7 +44,7 @@ local statedata =
 		hitanim     = "hit_tall",
 		breakanim   = "mined_tall",
 		growanim    = "grow_normal_to_tall",
-		growsound   = "dontstarve/forest/treeGrow",
+		growsound   = "extrabuilds/marbleshrub/grow",
 		workleft    = TUNING.MARBLESHRUB_MINE_TALL,
 		loot = { "marble" },
     	randomloot = {
@@ -130,7 +130,7 @@ local function GrowFromSeed(inst)
     inst.components.growable:SetStage(1)
     inst.AnimState:PlayAnimation("grow_seed_to_short")
     inst.AnimState:PushAnimation("idle_short", false)
-    inst.SoundEmitter:PlaySound("dontstarve/forest/treeGrow")
+    inst.SoundEmitter:PlaySound("extrabuilds/marbleshrub/grow")
 end
 
 local function onworked(inst, worker, workleft)

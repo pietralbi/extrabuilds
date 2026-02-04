@@ -30,11 +30,13 @@ local function test_ground(inst, pt)
     end
 	local tiletype = GetGroundTypeAtPosition(pt)
 	ground_OK = ground_OK and
-				    tiletype ~= GROUND.ROAD and 
+				    tiletype ~= GROUND.ROAD and
+                    tiletype ~= GROUND.ROCKY and
                     tiletype ~= GROUND.IMPASSABLE and
-					tiletype ~= GROUND.UNDERROCK and 
-                    tiletype ~= GROUND.WOODFLOOR and 
-					tiletype ~= GROUND.CARPET and 
+					tiletype ~= GROUND.UNDERROCK and
+                    tiletype ~= GROUND.WOODFLOOR and
+					tiletype ~= GROUND.CARPET and
+                    tiletype ~= GROUND.CHECKER and
                     tiletype < GROUND.UNDERGROUND
 	
 	if ground_OK then
