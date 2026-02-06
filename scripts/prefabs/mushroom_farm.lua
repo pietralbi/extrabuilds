@@ -333,8 +333,6 @@ local function fn()
     inst:AddTag("trader")
     inst:AddTag("alltrader")
 
-    inst.scrapbook_specialinfo = "MUSHROOMFARM"
-
     ---------------------
     inst:AddComponent("harvestable")
     inst.components.harvestable:SetOnGrowFn(ongrow)

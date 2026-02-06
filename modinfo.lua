@@ -16,7 +16,6 @@ hamlet_compatible           = true
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
 
-
 -- Configs
 
 local function simpleopt(x)

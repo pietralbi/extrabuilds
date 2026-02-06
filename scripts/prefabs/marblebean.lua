@@ -25,7 +25,7 @@ end
 local notags = {'NOBLOCK', 'player', 'FX'}
 local function test_ground(inst, pt)
     local ground_OK = true    
-    if U.enabledSHIP or U.enabledPORK then	
+    if U.enabledSHIP or U.enabledPORK then
         ground_OK = inst:GetIsOnLand(pt.x, pt.y, pt.z)
     end
 	local tiletype = GetGroundTypeAtPosition(pt)
