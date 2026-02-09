@@ -213,6 +213,8 @@ if GetModConfigData("marble_tree") then
     GLOBAL.table.insert(PrefabFiles, "marblebean_sapling")
     GLOBAL.table.insert(PrefabFiles, "marbleshrub")
 
+    RegisterInventoryItemAtlas("images/inventoryimages/marblebean.xml", "marblebean.tex")
+
     local marblebean = MakeRecipe("marblebean", {Ingredient("marble",1)}, RECIPETABS.REFINE, TECH.SCIENCE_TWO, RECIPE_GAME_TYPE.VANILLA)
 	marblebean.atlas = "images/inventoryimages/marblebean.xml"
     local cutstone = GLOBAL.GetRecipe("cutstone")
