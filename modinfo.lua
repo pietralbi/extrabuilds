@@ -3,7 +3,7 @@ name = "Extra builds"
 description = "Makes extra structures cradftable, including catcoon house, mermhouses, marble tree and mushroom planter"
 author = "Alberto Pietralunga"
 
-version = "1.4.2"
+version = "1.4.3"
 forumthread = ""
 
 api_version = 6
